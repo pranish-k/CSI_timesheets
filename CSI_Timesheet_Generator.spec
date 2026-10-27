@@ -1,5 +1,10 @@
 # -*- mode: python ; coding: utf-8 -*-
+import os
 from PyInstaller.utils.hooks import collect_data_files
+
+# The real roster is kept out of git; bundle the local copy as the app's starting roster if present.
+roster = os.path.join(SPECPATH, 'employees.json')
+roster_datas = [(roster, '.')] if os.path.exists(roster) else []
 
 a = Analysis(
     ['generate_timesheets.py'],
@@ -8,6 +13,7 @@ a = Analysis(
     datas=[
         *collect_data_files('tkcalendar'),
         *collect_data_files('babel'),
+        *roster_datas,
     ],
     hiddenimports=['babel.numbers'],
     hookspath=[],

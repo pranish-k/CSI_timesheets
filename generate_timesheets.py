@@ -21,51 +21,12 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.styles import getSampleStyleSheet
 
 # =============================================================================
-# DEFAULT EMPLOYEE DATA - Used when employees.json doesn't exist
+# SAMPLE EMPLOYEE DATA - Used when there is no employees.json and no bundled roster
 # =============================================================================
 DEFAULT_EMPLOYEES = [
-    ("Archway/Social Media", "Brianna", "Rached"),
-    ("CCEC", "Sarah", "Glisson"),
-    ("CCEC", "Savannah", "Davis"),
-    ("CCEC", "Kyree", "Robinson-Banks"),
-    ("CCEC", "Emily", "Beck"),
-    ("CCEC", "Jackie", "Reed"),
-    ("CCEC", "Joellie", "Acebo"),
-    ("Laptop Upcycle", "Justin", "Burgess"),
-    ("Laptop Upcycle", "Aleksandra", "Tomaszkowicz"),
-    ("Commuter Affairs", "Luannee", "Hernandez"),
-    ("Commuter Affairs", "Kya", "McDonald"),
-    ("Financial Assistant", "Siddhant", "Gurung"),
-    ("Financial Assistant", "Pranish", "Khanal"),
-    ("Financial Assistant", "Jennica", "Bugtong"),
-    ("Front Desk", "Carly", "Chiu"),
-    ("Front Desk", "Lida", "Kelyman"),
-    ("Front Desk", "Giana", "Comisi"),
-    ("Front Desk", "Ash", "Curtis"),
-    ("OFSL", "Chanel", "Taylor"),
-    ("OFSL", "Ilianna", "DeJesus"),
-    ("J. Lee's", "Jestina", "Brown"),
-    ("J. Lee's", "Charbel", "Maroun"),
-    ("J. Lee's", "Theodore", "Walton"),
-    ("J. Lee's", "Sandra", "Yeboah"),
-    ("J. Lee's", "Gabby", "Hodsden"),
-    ("J. Lee's", "Shannon", "Lee Gomez"),
-    ("J. Lee's", "Prashant", "Shah"),
-    ("J. Lee's", "Ronaldson", "Couyoute"),
-    ("J. Lee's", "Magdalena", "Nikolova"),
-    ("J. Lee's", "Liza", "Kireev"),
-    ("OVP", "Jailyn", "Agard"),
-    ("OVP", "Abby", "Casimir"),
-    ("OVP", "Gracyn", "Nutt"),
-    ("OVP", "Victoria", "Perri"),
-    ("Roadrunner Center", "Allison", "Tanasy"),
-    ("Roadrunner Center", "Collin", "Suojanen"),
-    ("Women's Center", "Ariana", "Jimenez Rivera"),
-    ("Women's Center", "Ty", "Boehler"),
-    ("Women's Center", "Sofia", "Piccinich"),
-    ("Women's Center", "Cookie", "Wahba"),
-    ("Women's Center", "Maria", "Manniello"),
-    ("Women's Center", "Brooke", "Newland"),
+    ("Front Desk", "Jane", "Doe"),
+    ("Front Desk", "John", "Smith"),
+    ("Financial Assistant", "Alex", "Lee"),
 ]
 
 
@@ -106,7 +67,21 @@ def load_employees():
             except:
                 pass  # GUI may not be initialized yet
 
-    save_employees(DEFAULT_EMPLOYEES)
+    employees = load_seed_employees()
+    save_employees(employees)
+    return employees
+
+
+def load_seed_employees():
+    """Get the starting roster: the employees.json bundled into the app if present, else the samples."""
+    if getattr(sys, 'frozen', False):
+        bundled_file = os.path.join(sys._MEIPASS, "employees.json")
+        if os.path.exists(bundled_file):
+            try:
+                with open(bundled_file, 'r') as f:
+                    return [tuple(emp) for emp in json.load(f)]
+            except (json.JSONDecodeError, IOError) as e:
+                print(f"Warning: Could not load bundled employees.json ({e}). Using samples.")
     return list(DEFAULT_EMPLOYEES)
 
 
