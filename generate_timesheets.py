@@ -71,6 +71,12 @@ DEFAULT_EMPLOYEES = [
 
 def get_data_dir():
     """Get the directory where data files are stored."""
+    if getattr(sys, 'frozen', False):
+        # Bundled app - use Application Support (writable)
+        app_support = os.path.expanduser('~/Library/Application Support/CSI Timesheet Generator')
+        if not os.path.exists(app_support):
+            os.makedirs(app_support)
+        return app_support
     return os.path.dirname(os.path.abspath(__file__))
 
 
