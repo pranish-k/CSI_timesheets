@@ -16,9 +16,7 @@ import json
 
 from reportlab.lib.pagesizes import LETTER
 from reportlab.lib.units import inch
-from reportlab.lib import colors
 from reportlab.pdfgen import canvas
-from reportlab.lib.styles import getSampleStyleSheet
 
 # =============================================================================
 # SAMPLE EMPLOYEE DATA - Used when there is no employees.json and no bundled roster
@@ -56,16 +54,18 @@ def load_employees():
                 data = json.load(f)
                 return [tuple(emp) for emp in data]
         except (json.JSONDecodeError, IOError) as e:
-            # File exists but is corrupted - warn user and use defaults
-            print(f"Warning: Could not load employees.json ({e}). Using defaults.")
-            from tkinter import messagebox
+            # File exists but is corrupted - warn user and use the starting roster,
+            # without overwriting the file so it can still be recovered by hand
+            print(f"Warning: Could not load employees.json ({e}). Using the starting roster.")
             try:
                 messagebox.showwarning(
                     "Data File Error",
-                    f"Could not load employees.json:\n{e}\n\nUsing default employee list."
+                    f"Could not load employees.json:\n{e}\n\nUsing the starting employee list. "
+                    "The file is left as is until you save changes."
                 )
-            except:
+            except tk.TclError:
                 pass  # GUI may not be initialized yet
+            return load_seed_employees()
 
     employees = load_seed_employees()
     save_employees(employees)
@@ -93,13 +93,12 @@ def save_employees(employees):
             json.dump(employees, f, indent=2)
         return True
     except (IOError, OSError) as e:
-        from tkinter import messagebox
         try:
             messagebox.showerror(
                 "Save Error",
                 f"Could not save employees.json:\n{e}"
             )
-        except:
+        except tk.TclError:
             print(f"Error: Could not save employees.json: {e}")
         return False
 
@@ -682,7 +681,7 @@ class TimesheetGeneratorApp:
                                fg=COLORS['text_secondary'], font=('SF Pro Display', 11))
         status_label.pack(side=tk.LEFT, padx=15, pady=8)
 
-        version_label = tk.Label(status_bar, text="v1.0 — Pranish", bg=COLORS['surface'],
+        version_label = tk.Label(status_bar, text="v1.0 - Pranish", bg=COLORS['surface'],
                                 fg=COLORS['text_secondary'], font=('SF Pro Display', 11))
         version_label.pack(side=tk.RIGHT, padx=15, pady=8)
 
@@ -1039,7 +1038,7 @@ class TimesheetGeneratorApp:
 
 def main():
     root = tk.Tk()
-    app = TimesheetGeneratorApp(root)
+    TimesheetGeneratorApp(root)
     root.mainloop()
 
 
