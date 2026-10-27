@@ -63,3 +63,7 @@ To build an unsigned app only, run `pyinstaller CSI_Timesheet_Generator.spec --c
 | `build_dmg.sh` | Build, sign, package and notarize script |
 | `entitlements.plist` | Hardened runtime entitlements needed by the bundled Python |
 | `icon.icns`, `Logo.jpg` | App icon and logo |
+
+## License
+
+Released under the [MIT License](LICENSE).
