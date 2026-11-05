@@ -3,6 +3,10 @@
 A small desktop app that prints a two-week paper timesheet for every student employee, combined into a single PDF.
 It is built with Python, Tkinter and ReportLab, and ships as a signed macOS app.
 
+![Two generated timesheet pages, one per employee, for the pay period starting Saturday 10/24/2026](docs/timesheet-pdf.png)
+
+*Two pages from a generated PDF, using sample employees.*
+
 ## What it does
 
 - Pick the Saturday that starts the pay period from a calendar.
