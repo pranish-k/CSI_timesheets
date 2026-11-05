@@ -384,7 +384,7 @@ class TimesheetGeneratorApp:
     def __init__(self, root):
         self.root = root
         self.root.title("CSI Timesheet Generator")
-        self.root.geometry("580x720")
+        self.root.geometry("580x760")
         self.root.resizable(False, False)
         self.root.configure(bg=COLORS['bg'])
 
@@ -669,12 +669,13 @@ class TimesheetGeneratorApp:
 
         # Status bar at bottom
         status_bar = tk.Frame(main_frame, bg=COLORS['surface'], height=35)
-        status_bar.pack(fill=tk.X, side=tk.BOTTOM)
+        # Pack before the content so the status bar keeps its space when the window is tight
+        status_bar.pack(fill=tk.X, side=tk.BOTTOM, before=content)
         status_bar.pack_propagate(False)
 
         # Top border for status bar
         status_border = tk.Frame(main_frame, bg=COLORS['border'], height=1)
-        status_border.pack(fill=tk.X, side=tk.BOTTOM)
+        status_border.pack(fill=tk.X, side=tk.BOTTOM, before=content)
 
         self.status_var = tk.StringVar(value="Ready")
         status_label = tk.Label(status_bar, textvariable=self.status_var, bg=COLORS['surface'],
@@ -854,11 +855,12 @@ class TimesheetGeneratorApp:
 
         # Status bar
         status_bar = tk.Frame(edit_frame, bg=COLORS['surface'], height=35)
-        status_bar.pack(fill=tk.X, side=tk.BOTTOM)
+        # Pack before the content so the status bar keeps its space when the window is tight
+        status_bar.pack(fill=tk.X, side=tk.BOTTOM, before=content)
         status_bar.pack_propagate(False)
 
         status_border = tk.Frame(edit_frame, bg=COLORS['border'], height=1)
-        status_border.pack(fill=tk.X, side=tk.BOTTOM)
+        status_border.pack(fill=tk.X, side=tk.BOTTOM, before=content)
 
         self.edit_status_var = tk.StringVar(value="Select an employee to edit")
         edit_status = tk.Label(status_bar, textvariable=self.edit_status_var, bg=COLORS['surface'],
