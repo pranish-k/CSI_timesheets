@@ -11,6 +11,12 @@ It is built with Python, Tkinter and ReportLab, and ships as a signed macOS app.
 
 *Two pages from a generated PDF, using sample employees.*
 
+## Download
+
+[Download the latest version](https://github.com/pranish-k/CSI_timesheets/releases/latest/download/CSI_Timesheet_Generator.dmg) for Macs with Apple silicon.
+It is signed and notarized by Apple.
+Open the DMG and drag the app into Applications.
+
 ## What it does
 
 - Pick the Saturday that starts the pay period from a calendar.
